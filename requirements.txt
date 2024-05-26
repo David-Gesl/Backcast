@@ -1,0 +1,4 @@
+pydub
+google
+flask
+yt_dlp
