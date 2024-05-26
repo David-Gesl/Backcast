@@ -77,3 +77,69 @@ body {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
 }
 
+.dial {
+    width: 40px;
+    width: 40px;
+    background: #444;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.dial:before {
+    content: '';
+    width: 6px;
+    height: 20px;
+    background: #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    border-radius: 3px;
+}
+
+/* left dial color */
+.tuning {
+    border: 2px solid #f00;
+}
+
+/* Right dial color */
+.volume {
+    border: 2px solid #00f;
+}
+
+/* Speaker / grille  */
+.speaker {
+    background: #444;
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    /* remove this to get a more normal border  */
+    background: repeating-linear-gradient(
+        315deg,
+        #333,
+        #333 5px,
+        #555 5px,
+        #555 10px
+    );
+}
+
+.grille {
+    width: 100%;
+    height: 80px;
+    background: repeating-linear-gradient(
+        45deg,
+        #333,
+        #333 5px,
+        #555 5px,
+        #555 10px
+    );
+    border-radius: 5px;
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+}
