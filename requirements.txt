@@ -1,6 +1,5 @@
 pydub
-google
-GoogleTTS
+google-cloud-texttospeech
 flask
 yt_dlp
 OpenAi
