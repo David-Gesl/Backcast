@@ -1,4 +1,7 @@
 pydub
 google
+GoogleTTS
 flask
 yt_dlp
+OpenAi
+mutagen
