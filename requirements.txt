@@ -1,4 +1,6 @@
 pydub
-google
+google-cloud-texttospeech
 flask
 yt_dlp
+OpenAi
+mutagen
