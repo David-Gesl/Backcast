@@ -1,6 +1,7 @@
 from flask import Flask, Response
 from datetime import datetime
 import os
+from mutagen.mp3 import MP3
 
 app = Flask(__name__)
 
@@ -17,7 +18,9 @@ app = Flask(__name__)
 # filename = "final_audio.opus"
 
 # filename = "final_audio_openai_8kHz.mp3"
-filename = "final_audio_openai.mp3"
+# filename = "final_audio_openai.mp3"
+
+filename = "final_audio.mp3"
 
 format = "mpeg"
 # format = "wav"
@@ -32,12 +35,18 @@ def home():
 
 @app.route("/feed")
 def stream():
-    # now = datetime.now()
-    # seconds_since_midnight = (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
-    # offset = int((seconds_since_midnight % 55) * 15898)
+    today = datetime.now().strftime("%d-%m")
+    filepath = f"./templates/{today}/{filename}"
+    length = MP3(filepath).info.length
+
+    now = datetime.now()
+    seconds_since_midnight = (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
+    offset = int((seconds_since_midnight % length) * 15898)
+
+
     def generate():
-        with open(f"./templates/{filename}", "rb") as feed:
-            # feed.seek(offset)
+        with open(f"./templates/{today}/{filename}", "rb") as feed:
+            feed.seek(offset)
             data = feed.read(buffersize)
             while data:
                 yield data
@@ -46,5 +55,4 @@ def stream():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0",
-            debug=True,
             port=3000)

@@ -1,5 +1,6 @@
-from pydub import AudioSegment
+from pydub import AudioSegment, fade
 from pydub.effects import normalize
+from pydub.scipy_effects import eq
 
 # from OpenAITTS import get_voice
 from GoogleTTS import get_voice
@@ -30,11 +31,28 @@ back = AudioSegment.from_file("backtrack.mp3", "mp3")
 # Load the audio files
 audioList = [AudioSegment.from_file(f, "mp3") for f in filenames]
 
-# Combine the audio files
+# Combine the audio files and eq the back track to music to make room for the voice
+
 combined = AudioSegment.empty()
 combined += AudioSegment.silent(duration=5000)
+backpointer = 5000
 for audio in audioList:
     combined += audio
+    length = len(audio)
+    # Add equalizer to the back track
+    downdb = -6
+    fadeduration = 5000
+
+    beg = back[:backpointer]
+    beg = beg.fade(from_again=0, to_gain=downdb, start=backpointer-fadeduration, duration=fadeduration)
+
+    mid = back[backpointer:backpointer + length]
+    mid = mid.eq(focus_freq=750, gain=-10) + downdb
+
+    end = back[backpointer + length:]
+    end = end.fade(from_gain=downdb, to_gain=0, start=0, duration=fadeduration)
+
+    backpointer += length
     combined += AudioSegment.silent(duration=10 * 60 * 1000)
 combined += AudioSegment.silent(duration=5000)
 
@@ -56,5 +74,6 @@ final_audio = final_audio.fade_in(3000).fade_out(3000)
 
 # get todays date
 today = datetime.now().strftime("%d-%m")
+
 # Export the modified audio
-final_audio.export(f"./{today}/final_audio.mp3", format="mp3")
+final_audio.export(f"./templates/{today}/final_audio_test.mp3", format="mp3")
