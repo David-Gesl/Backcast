@@ -1,16 +1,27 @@
 from openai import OpenAI
 from dotenv import load_dotenv
+from datetime import datetime
+import os
 load_dotenv()
 client = OpenAI()
 
-speech_file_path = "output1.mp3"
+def get_voice(filename, text):
+  # make a new folder for today's date
+  today = datetime.now().strftime("%d-%m")
+  if not os.path.exists(f"./templates/{today}"):
+    os.mkdir(f"./templates/{today}")
+  fname = filename
+  pname = f"./templates/{today}/"
 
-input_text = "Ladies and gentlemen, gather 'round your radios! On this fine day, May 25th, let’s travel back to the year 1895. Picture a world buzzing with innovation and wonder. On this very day, the dynamic duo of the Lumière brothers, Auguste and Louis, dazzled Parisian audiences with the first public screening of their revolutionary invention: the Cinématographe. Imagine the gasps of astonishment as moving pictures danced on the screen, bringing scenes of bustling city life to vivid reality. It was the dawn of a new era in entertainment, and the world of cinema was born! Now, doesn’t that just make your heart race with excitement?"
+  response = client.audio.speech.create(
+    model="tts-1-hd",
+    voice="onyx",
+    input=text
+  )
 
-response = client.audio.speech.create(
-  model="tts-1-hd",
-  voice="onyx",
-  input=input_text
-)
+  response.write_to_file(pname + fname)
 
-response.write_to_file(speech_file_path)
+  return pname+fname
+
+if __name__ == "__main__":
+  get_voice("introduction", "Hello, I am Benny, your radio jockey from the early 1900s. Welcome to Tales of Time, your daily dose of history, culture, and stories. Today is 15th August, and we have a lot of interesting things to talk about. Let's get started.")
