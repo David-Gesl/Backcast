@@ -91,4 +91,4 @@ final_audio = final_audio.fade_in(3000).fade_out(3000)
 today = datetime.now().strftime("%d-%m")
 
 # Export the modified audio
-final_audio.export(f"./templates/{today}/final_audio_test.mp3", format="mp3")
+final_audio.export(f"../templates/{today}/final_audio_test.mp3", format="mp3")

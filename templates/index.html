@@ -65,11 +65,11 @@
 
             // Load Radio model
             const fbx_loader = new FBXLoader();
-            fbx_loader.load('models/radio/radio.fbx', (object) => {
+            fbx_loader.load('../static/models/radio/radio.fbx', (object) => {
                 object.traverse((child) => {
                     if (child.isMesh) {
                         const textureLoader = new THREE.TextureLoader();
-                        const texture = textureLoader.load('radio/textures/blinn1_Base_color.png');
+                        const texture = textureLoader.load('../static/models/radio/textures/blinn1_Base_color.png');
                         child.material.map = texture;
                         child.material.needsUpdate = true;
                     }
@@ -80,7 +80,7 @@
 
             // Load room
             const gltf_loader = new GLTFLoader();
-            gltf_loader.load('models/room/room.glb', (gltf) => {
+            gltf_loader.load('../static/models/room/room.glb', (gltf) => {
                 const object = gltf.scene;
 
                 object.position.set(0, 0, 0);

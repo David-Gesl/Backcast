@@ -1,4 +1,4 @@
-from flask import Flask, Response
+from flask import Flask, Response, render_template
 from datetime import datetime
 import os
 from mutagen.mp3 import MP3
@@ -31,21 +31,21 @@ buffersize = 1024
 
 @app.route("/")
 def home():
-    return "Hello, World!"
+    return render_template('index.html')
 
 @app.route("/feed")
 def stream():
-    today = datetime.now().strftime("%d-%m")
-    filepath = f"./templates/{today}/{filename}"
+    # today = datetime.now().strftime("%d-%m")
+    # filepath = f"./templates/{today}/{filename}"
+    filepath = f"./templates/{filename}"
     length = MP3(filepath).info.length
 
     now = datetime.now()
     seconds_since_midnight = (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
     offset = int((seconds_since_midnight % length) * 15898)
 
-
     def generate():
-        with open(f"./templates/{today}/{filename}", "rb") as feed:
+        with open(f"{filepath}", "rb") as feed:
             feed.seek(offset)
             data = feed.read(buffersize)
             while data:
