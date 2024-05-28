@@ -630,10 +630,9 @@
             const audioElement = new Audio('/feed');
             const track = audioContext.createMediaElementSource(audioElement);
             track.connect(audioContext.destination);
-            await audioElement.play().then(() => {
-                currentAudio = audioElement; // Store the currently playing audio
-                audioPlaying = true;
-            })
+            await audioElement.play();
+            currentAudio = audioElement; // Store the currently playing audio
+            audioPlaying = true;
         }
 
         function stopCurrentAudioStream() {
