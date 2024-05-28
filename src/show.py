@@ -1,7 +1,7 @@
-from script import getScript
-from tts import getVocal
-from ytmusic import getMusic
-from retrofy import retrofy
+from .script import getScript
+from .tts import getVocal
+from .ytmusic import getMusic
+from .retrofy import retrofy
 
 # from random import randint # for backup music
 
