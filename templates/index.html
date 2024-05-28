@@ -543,7 +543,11 @@
                 });
                 interactionManager.add(object);
                 object.addEventListener('click', (event) => {
-                    startAudioStream();
+                    if (!audioPlaying) {
+                        startAudioStream();
+                    } else {
+                        stopAudioStream();
+                    }
                 });
                 scene.add(object);
                 object.position.set(7, 12, -8.5);
@@ -655,7 +659,6 @@
                 audioPlaying = false;
             }
         }
-
     </script>
     </body>
 </body>
