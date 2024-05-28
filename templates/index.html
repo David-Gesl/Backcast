@@ -653,11 +653,11 @@
                 const msToNextInterval = 900000 - (msSinceMidnight % 900000); // 900000 ms = 15 minutes
 
                 setTimeout(() => {
-                    stopCurrentAudioStream();
+                    stopAudioStream();
                     playAudioStream().catch(console.error);
 
                     currentInterval = setInterval(() => {
-                        stopCurrentAudioStream();
+                        stopAudioStream();
                         playAudioStream().catch(console.error);
                         console.log("Refreshing stream...");
                     }, 900000);
