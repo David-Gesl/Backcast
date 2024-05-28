@@ -74,5 +74,5 @@ def show():
     return response
 
 if __name__ == "__main__":
-    # threading.Thread(target=updateShow).start()
+    threading.Thread(target=updateShow).start()
     app.run()
