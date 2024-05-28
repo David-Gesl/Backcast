@@ -14,6 +14,7 @@ def retrofy(vocals, music, output):
     gc.collect()
 
     print("Selecting music")
+    import os, psutil; print(psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2)
     # Randomly select a 15 minute segment of the music
     music = AudioSegment.from_file(music)
     print("Loaded music segment")

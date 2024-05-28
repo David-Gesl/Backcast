@@ -6,3 +6,4 @@ OpenAi
 mutagen
 scipy
 pytube
+psutil
