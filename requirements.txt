@@ -5,3 +5,4 @@ yt_dlp
 OpenAi
 mutagen
 scipy
+pytube
