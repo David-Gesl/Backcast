@@ -6,9 +6,23 @@
     <style>
         body { margin: 0; }
         canvas { display: block; }
+        #info {
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            z-index: 100;
+            display:block;
+        }
     </style>
 </head>
 <body>
+    <div id="info">
+        <h1>Welcome to Backcast.</h1>
+        <h2>To start/stop listening, just click the radio.</h2>
+        <h3>&copy; 2024 Colin Pannikkat, David Gesl, Ajinkya Gokule, Sarvesh Thiruppathi</h3>
+    </div>
     <script type="importmap">
         {
             "imports": {
@@ -492,7 +506,6 @@
 
         // const gui = new GUI();
         
-
         function init() {
             scene = new THREE.Scene();
             scene.background = new THREE.Color( 'black' );
