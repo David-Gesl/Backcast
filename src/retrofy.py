@@ -33,6 +33,7 @@ def retrofy(vocals, music, output):
 
     # make the music quiet when the vocals start and back to normal when the vocals end
     change = 16
+    # music = music.set_frame_rate(11025)
     print("Fading music")
     music = music.fade(to_gain=-change, start=4000, duration=2000)
     print("fade1")
@@ -40,7 +41,8 @@ def retrofy(vocals, music, output):
     music = music.fade(to_gain=change, start=vocalLen, duration=5000)
     print("fade2")
     gc.collect()
-    music = music.fade_in(2000).fade_out(5000)
+    music = music.fade_in(2000)
+    music = music.fade_out(5000)
     print("fade3")
     gc.collect()
 
