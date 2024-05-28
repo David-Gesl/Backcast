@@ -10,3 +10,5 @@ retromusic
 templates/26-05
 __pycache__
 retrotest.py
+.DS_Store
+*/.DS_Store
