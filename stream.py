@@ -2,6 +2,7 @@ from flask import Flask, Response, render_template
 from datetime import datetime
 from src.show import getShow
 import threading
+import time
 
 app = Flask(__name__)
 
@@ -11,16 +12,30 @@ format = "mpeg"
 
 buffersize = 1024
 
-newShowRequested_lock = threading.Lock()
-newShowRequested = False
+def updateShow():
+    while True:
+        now = datetime.now()
+        hour = now.replace(hour=now.hour, minute=0, second=0, microsecond=0)
+        seconds_since_hour = (now - hour).total_seconds()
+        seconds_into_show = seconds_since_hour % (15 * 60)
+
+        if seconds_into_show >= (13 * 60):
+            threading.Thread(target=getShow, args=(filepath,)).start()
+            time.sleep(10 * 60)
+        else:
+            time.sleep(30)
 
 def deliverShow(offset):
-    with open(f"{filepath}", "rb") as feed:
-        feed.seek(offset)
-        data = feed.read(buffersize)
-        while data:
-            yield data
+    while True:
+        with open(f'{filepath}', 'rb') as feed:
+            feed.seek(offset)
             data = feed.read(buffersize)
+            while data:
+                yield data
+                data = feed.read(buffersize)
+            print("Finished sending")
+            offset = 0
+        time.sleep(1)
 
 def deliverStatic():
     with open(f'{staticpath}', 'rb') as feed:
@@ -35,7 +50,6 @@ def home():
 
 @app.route("/feed")
 def stream():
-    show_length = 13 * 60
     length = 15 * 60
 
     now = datetime.now()
@@ -43,29 +57,25 @@ def stream():
     seconds_since_hour = (now - hour).total_seconds()
     seconds_into_show = seconds_since_hour % length
     byterate = 16000
-
     offset = int(seconds_into_show * byterate)
 
-    global newShowRequested
-    if seconds_into_show < show_length:
-        with newShowRequested_lock:
-            newShowRequested = False
-        return Response(deliverShow(offset), mimetype=f"audio/{format}")
-    else:
-        with newShowRequested_lock:
-            if not newShowRequested:
-                newShowRequested = True
-                # start a new thread to generate a new show
-                threading.Thread(target=getShow, args=(filepath,)).start()
-        return Response(deliverStatic(), mimetype=f"audio/{format}")
+    response = Response(deliverShow(offset), mimetype=f"audio/{format}")
 
-@app.route("/noise")
-def noise():
-    return Response(deliverStatic(), mimetype=f"audio/{format}")
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    response.headers.pop("Content-Length", None)
+    return response
 
 @app.route("/show")
 def show():
-    return Response(deliverShow(0), mimetype=f"audio/{format}")
+    response = Response(deliverShow(0), mimetype=f"audio/{format}")
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    response.headers.pop("Content-Length", None)
+    return response
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=4000)
+    # threading.Thread(target=updateShow).start()
+    app.run()

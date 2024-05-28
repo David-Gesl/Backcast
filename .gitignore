@@ -8,3 +8,4 @@ retrotest.py
 */.DS_Store
 *.pem
 .DS_Store
+templates/*.mp3
