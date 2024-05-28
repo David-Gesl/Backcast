@@ -1,7 +1,7 @@
 # Backcast
-Tune in at anytime for a back-to-the-past broadcast with a 24/7 AI-powered radio stream.
+Tune in at anytime for a back-to-the-past broadcast with a 24/7 AI-powered radio stream. Checkout the stream [here](http://3.17.242.126/)
 
-![focii_background](./static/images/room-pic.jpg)
+![project-pic](./static/images/room-pic.jpg)
 
 [Devpost](https://devpost.com/software/timeless-w1ze62)
 
