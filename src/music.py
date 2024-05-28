@@ -3,7 +3,8 @@ from yt_dlp.utils._utils import MaxDownloadsReached
 import random
 import datetime
 
-URLS = ["https://youtube.com/playlist?list=PLkRNa08en8VwGZAmeDszJeajSpM23bCVD&si=8aTDsf8JIJKM2P_d"] # retro music playlist
+# URLS = ["https://youtube.com/playlist?list=PLkRNa08en8VwGZAmeDszJeajSpM23bCVD&si=8aTDsf8JIJKM2P_d"] # retro music playlist
+URLS = ["https://youtube.com/playlist?list=PLz1WANnSJES9Yesv3Wk7kSjD7VTcGdLxw&si=my-QbfjxBmdLOoD8"]
 
 random.seed(int(datetime.datetime.now().timestamp()))
 
@@ -24,3 +25,6 @@ def downloadMusic():
             ydl.download(URLS)
         except MaxDownloadsReached as e:
             return
+        
+if __name__ == "__main__":
+    downloadMusic()

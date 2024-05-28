@@ -8,7 +8,7 @@ client = OpenAI()
 def get_voice(filename, text):
   # make a new folder for today's date
   today = datetime.now().strftime("%d-%m")
-  if not os.path.exists(f"./templates/{today}"):
+  if not os.path.exists(f"../templates/{today}"):
     os.mkdir(f"./templates/{today}")
   fname = filename
   pname = f"./templates/{today}/"
