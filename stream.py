@@ -1,33 +1,33 @@
 from flask import Flask, Response, render_template
 from datetime import datetime
-import os
-from mutagen.mp3 import MP3
+from src.show import getShow
+import threading
 
 app = Flask(__name__)
 
-# filename = "final_audio_4kHz.wav"
-# filename = "final_audio.wav"
-
-# filename = "final_audio_8kHz.mp3"
-# filename = "final_audio.mp3"
-
-# filename = "final_audio.ogg"
-
-# filename = "final_audio.aac"
-
-# filename = "final_audio.opus"
-
-# filename = "final_audio_openai_8kHz.mp3"
-# filename = "final_audio_openai.mp3"
-
-filename = "final_audio.mp3"
-
+filepath = "./templates/show.mp3"
+staticpath = "./templates/static.mp3"
 format = "mpeg"
-# format = "wav"
-# format = "ogg"
-# format = "aac"
-# format = "opus"
+
 buffersize = 1024
+
+newShowRequested_lock = threading.Lock()
+newShowRequested = False
+
+def deliverShow(offset):
+    with open(f"{filepath}", "rb") as feed:
+        feed.seek(offset)
+        data = feed.read(buffersize)
+        while data:
+            yield data
+            data = feed.read(buffersize)
+
+def deliverStatic():
+    with open(f'{staticpath}', 'rb') as feed:
+        data = feed.read(buffersize)
+        while data:
+            yield data
+            data = feed.read(buffersize)
 
 @app.route("/")
 def home():
@@ -35,23 +35,37 @@ def home():
 
 @app.route("/feed")
 def stream():
-    # today = datetime.now().strftime("%d-%m")
-    # filepath = f"./templates/{today}/{filename}"
-    filepath = f"./templates/{filename}"
-    length = MP3(filepath).info.length
+    show_length = 13 * 60
+    length = 15 * 60
 
     now = datetime.now()
-    seconds_since_midnight = (now - now.replace(hour=0, minute=0, second=0, microsecond=0)).total_seconds()
-    offset = int((seconds_since_midnight % length) * 15898)
+    hour = now.replace(hour=now.hour, minute=0, second=0, microsecond=0)
+    seconds_since_hour = (now - hour).total_seconds()
+    seconds_into_show = seconds_since_hour % length
+    byterate = 16000
 
-    def generate():
-        with open(f"{filepath}", "rb") as feed:
-            feed.seek(offset)
-            data = feed.read(buffersize)
-            while data:
-                yield data
-                data = feed.read(buffersize)
-    return Response(generate(), mimetype=f"audio/{format}")
+    offset = int(seconds_into_show * byterate)
+
+    global newShowRequested
+    if seconds_into_show < show_length:
+        with newShowRequested_lock:
+            newShowRequested = False
+        return Response(deliverShow(offset), mimetype=f"audio/{format}")
+    else:
+        with newShowRequested_lock:
+            if not newShowRequested:
+                newShowRequested = True
+                # start a new thread to generate a new show
+                threading.Thread(target=getShow, args=(filepath,)).start()
+        return Response(deliverStatic(), mimetype=f"audio/{format}")
+
+@app.route("/noise")
+def noise():
+    return Response(deliverStatic(), mimetype=f"audio/{format}")
+
+@app.route("/show")
+def show():
+    return Response(deliverShow(0), mimetype=f"audio/{format}")
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    app.run(host="0.0.0.0", port=4000)

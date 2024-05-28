@@ -1,18 +1,20 @@
-from script import getScript
-from tts import getVocal
-from ytmusic import getMusic
-from retrofy import getShow
-from random import randint
+from src.script import getScript
+from src.tts import getVocal
+from src.ytmusic import getMusic
+from src.retrofy import retrofy
 
-talk = getScript()
+# from random import randint # for backup music
 
-vocals = getVocal(talk)
+def getShow(output):
+    talk = getScript()
 
-# will fix this later
-# music = getMusic()
+    vocals = getVocal(talk)
 
-# get a random music files from the templates folder
-music = f"./templates/music{randint(1, 3)}.mp3"
+    music = getMusic()
 
-show = getShow(vocals, music)
+# music = f"./templates/music{randint(1, 3)}.mp3" # for backup music
+    show = retrofy(vocals, music, output)
+    return show
 
+if __name__ == "__main__":
+    getShow("./templates/show_test.mp3")
