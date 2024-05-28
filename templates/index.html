@@ -630,8 +630,8 @@
         }
 
         function startAudioStream() {
-            console.log("Starting audio stream...")
             if (!audioPlaying) {
+                console.log("Starting audio stream...");
                 playAudioStream().catch(console.error);
                 audioPlaying = true;
 
@@ -655,6 +655,7 @@
         // To stop the audio stream if needed
         function stopAudioStream() {
             if (audioPlaying) {
+                console.log("Killing audio stream...");
                 clearInterval(currentInterval);
                 stopCurrentAudioStream();
                 audioPlaying = false;
