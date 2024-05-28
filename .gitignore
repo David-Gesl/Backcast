@@ -1,12 +1,6 @@
 env
 .env
 retromusic
-*.glb
-*.gltf
-*.bin
-*.obj
-*.fbx
-*.mtl
 templates/26-05
 __pycache__
 retrotest.py
