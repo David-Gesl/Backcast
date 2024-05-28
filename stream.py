@@ -73,6 +73,5 @@ def show():
     response.headers.pop("Content-Length", None)
     return response
 
-if __name__ == "__main__":
-    threading.Thread(target=updateShow).start()
-    app.run()
+threading.Thread(target=updateShow).start()
+app.run()
