@@ -26,16 +26,13 @@ def updateShow():
             time.sleep(30)
 
 def deliverShow(offset):
-    while True:
-        with open(f'{filepath}', 'rb') as feed:
-            feed.seek(offset)
+    with open(f'{filepath}', 'rb') as feed:
+        feed.seek(offset)
+        data = feed.read(buffersize)
+        while data:
+            yield data
             data = feed.read(buffersize)
-            while data:
-                yield data
-                data = feed.read(buffersize)
-            print("Finished sending")
-            offset = 0
-        time.sleep(1)
+        print("Finished sending")
 
 def deliverStatic():
     with open(f'{staticpath}', 'rb') as feed:
