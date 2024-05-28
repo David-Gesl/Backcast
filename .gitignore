@@ -12,3 +12,4 @@ __pycache__
 retrotest.py
 .DS_Store
 */.DS_Store
+*.pem
