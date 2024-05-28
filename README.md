@@ -5,9 +5,9 @@ Tune in at anytime for a back-to-the-past broadcast with a 24/7 AI-powered radio
 
 [Devpost](https://devpost.com/software/timeless-w1ze62)
 
-## How to use
+## How to Use
 
-## Structure
+## File Structure
 
 ---
-Copyright (c) 2023 Colin Pannikkat, Ajinkya Gokule, Sarvesh Thiruppathi Ahila, David Gesl
+&copy; 2024 Colin Pannikkat, Ajinkya Gokule, Sarvesh Thiruppathi Ahila, David Gesl
