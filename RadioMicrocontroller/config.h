@@ -6,6 +6,6 @@
 #define WIFI_PASSWORD "" 
 
 //Enter stream URL
-#define STREAM_URL "http://3.17.242.126/:3000/feed"
+#define STREAM_URL "http://3.17.242.126/feed"
 
 #endif
