@@ -16,23 +16,28 @@ def retrofy(vocals, music, output):
     print("Selecting music")
     import os, psutil; print(psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2)
     # Randomly select a 15 minute segment of the music
-    music = AudioSegment.from_file(music)
+    music = AudioSegment.from_file(music, duration=900)
     print("Loaded music segment")
-    musicLen = len(music)
-    showLen = 15 * 60 * 1000
-    start = randint(0, musicLen - showLen - 1)
-    music = music[start:start+showLen]
+    # musicLen = len(music)
+    # showLen = 15 * 60 * 1000
+    # start = randint(0, musicLen - showLen - 1)
+    # music = music[start:start+showLen]
     gc.collect()
     
+    print("Normalizing")
     music = normalize(music)
+    gc.collect()
 
+    print("Getting vocal length")
     vocalLen = len(vocals) + 5000
 
     # make the music quiet when the vocals start and back to normal when the vocals end
     change = 16
+    print("Fading music")
     music = music.fade(to_gain=-change, start=4000, duration=2000)
     music = music.fade(to_gain=change, start=vocalLen, duration=5000)
     music = music.fade_in(2000).fade_out(5000)
+    gc.collect()
 
     print("Combining")
     # Combine the vocals and music
