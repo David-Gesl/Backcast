@@ -122,7 +122,7 @@
     </script>
     <script>
         let audioPlaying = false;
-        // Function to fetch and play the audio stream
+
         async function playAudioStream() {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const audioElement = new Audio('/feed');
@@ -130,12 +130,20 @@
             track.connect(audioContext.destination);
             await audioElement.play();
         }
-        addEventListener('mousedown', function() {
+
+        function startAudioStream() {
             if (audioPlaying === false) {
                 playAudioStream().catch(console.error);
                 audioPlaying = true;
+
+                setInterval(() => {
+                    playAudioStream().catch(console.error);
+                }, 900000);
             }
-        });
+        }
+
+        addEventListener('mousedown', startAudioStream);
+
     </script>
     </body>
 </body>
