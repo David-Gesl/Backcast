@@ -25,6 +25,9 @@ def updateShow():
         else:
             time.sleep(30)
 
+print("starting update show thread...")
+threading.Thread(target=updateShow).start()
+
 def deliverShow(offset):
     with open(f'{filepath}', 'rb') as feed:
         feed.seek(offset)
@@ -73,5 +76,4 @@ def show():
     response.headers.pop("Content-Length", None)
     return response
 
-threading.Thread(target=updateShow).start()
-app.run()
+# app.run()
