@@ -122,6 +122,7 @@
     </script>
     <script>
         let audioPlaying = false;
+        let currentInterval;
 
         async function playAudioStream() {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -132,13 +133,29 @@
         }
 
         function startAudioStream() {
-            if (audioPlaying === false) {
+            if (!audioPlaying) {
                 playAudioStream().catch(console.error);
                 audioPlaying = true;
 
-                setInterval(() => {
+                const now = new Date();
+                const msSinceMidnight = now.getTime() - new Date(now.setHours(0, 0, 0, 0)).getTime();
+                const msToNextInterval = 900000 - (msSinceMidnight % 900000); // 900000 ms = 15 minutes
+
+                setTimeout(() => {
                     playAudioStream().catch(console.error);
-                }, 900000);
+
+                    currentInterval = setInterval(() => {
+                        playAudioStream().catch(console.error);
+                    }, 900000);
+                }, msToNextInterval);
+            }
+        }
+
+        // To stop the audio stream if needed
+        function stopAudioStream() {
+            if (audioPlaying) {
+                clearInterval(currentInterval);
+                audioPlaying = false;
             }
         }
 
