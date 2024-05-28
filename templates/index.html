@@ -121,6 +121,7 @@
         init();
     </script>
     <script>
+        let audioPlaying = false;
         // Function to fetch and play the audio stream
         async function playAudioStream() {
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -130,7 +131,10 @@
             await audioElement.play();
         }
         addEventListener('mousedown', function() {
-            playAudioStream().catch(console.error);
+            if (audioPlaying === false) {
+                playAudioStream().catch(console.error);
+                audioPlaying = true;
+            }
         });
     </script>
     </body>
