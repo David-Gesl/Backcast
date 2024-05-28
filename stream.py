@@ -3,6 +3,7 @@ from datetime import datetime
 from src.show import getShow
 import threading
 import time
+import gc
 
 app = Flask(__name__)
 
@@ -21,6 +22,7 @@ def updateShow():
 
         if seconds_into_show >= (13 * 60):
             threading.Thread(target=getShow, args=(filepath,)).start()
+            gc.collect()
             time.sleep(10 * 60)
         else:
             time.sleep(30)
