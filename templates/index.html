@@ -122,14 +122,22 @@
         let currentInterval;
         let currentAudio;
 
+        // async function playAudioStream() {
+        //     const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        //     const audioElement = new Audio('/feed');
+        //     const track = audioContext.createMediaElementSource(audioElement);
+        //     track.connect(audioContext.destination);
+        //     await audioElement.play();
+        // }
+
         function playAudioStream() {
             return new Promise((resolve, reject) => {
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const audioElement = new Audio('/feed');
                 const track = audioContext.createMediaElementSource(audioElement);
                 track.connect(audioContext.destination);
-                track.play().then(() => {
-                    currentAudio = track; // Store the currently playing audio
+                audioElement.play().then(() => {
+                    currentAudio = audioElement; // Store the currently playing audio
                     resolve();
                 }).catch(reject);
             });
