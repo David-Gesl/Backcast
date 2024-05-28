@@ -35,7 +35,9 @@ def retrofy(vocals, music, output):
     change = 16
     print("Fading music")
     music = music.fade(to_gain=-change, start=4000, duration=2000)
+    gc.collect()
     music = music.fade(to_gain=change, start=vocalLen, duration=5000)
+    gc.collect()
     music = music.fade_in(2000).fade_out(5000)
     gc.collect()
 
