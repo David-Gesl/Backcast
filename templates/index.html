@@ -656,6 +656,7 @@
         function stopAudioStream() {
             if (audioPlaying) {
                 clearInterval(currentInterval);
+                stopCurrentAudioStream();
                 audioPlaying = false;
             }
         }
