@@ -35,6 +35,7 @@
     <script type="module">
         import { Raycaster, Vector2 } from 'three';
 
+        // The interactive code is taken from THREE.interactive
         export class InteractiveObject {
         target;
         name;
@@ -495,7 +496,10 @@
             point.x = ((x - rect.left) / rect.width) * 2 - 1;
             point.y = -((y - rect.top) / rect.height) * 2 + 1;
         };
-    }
+        }
+        // End interactive manager functions
+
+        // Start of frontend code
         import * as THREE from 'three';
         import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
         import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
