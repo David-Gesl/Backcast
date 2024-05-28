@@ -16,6 +16,7 @@ def retrofy(vocals, music, output):
     print("Selecting music")
     # Randomly select a 15 minute segment of the music
     music = AudioSegment.from_file(music)
+    print("Loaded music segment")
     musicLen = len(music)
     showLen = 15 * 60 * 1000
     start = randint(0, musicLen - showLen - 1)
