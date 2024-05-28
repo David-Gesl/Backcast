@@ -127,8 +127,7 @@
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const audioElement = new Audio('/feed');
                 const track = audioContext.createMediaElementSource(audioElement);
-                track.connect(audioContext.destination);
-                track.play().then(() => {
+                track.connect(audioContext.destination).then(() => {
                     currentAudio = track; // Store the currently playing audio
                     resolve();
                 }).catch(reject);
@@ -137,7 +136,7 @@
 
         function stopCurrentAudioStream() {
             if (currentAudio) {
-                currentAudio.pause();
+                currentAudio.disconnect();
                 currentAudio.currentTime = 0; // Optionally reset the audio
                 currentAudio = null;
             }
