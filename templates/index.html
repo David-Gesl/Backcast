@@ -653,6 +653,7 @@
         function startAudioStream() {
             if (!audioPlaying) {
                 console.log("Starting audio stream...");
+                playAudioStream();
 
                 const now = new Date();
                 const msSinceMidnight = now.getTime() - new Date(now.setHours(0, 0, 0, 0)).getTime();
