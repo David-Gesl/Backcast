@@ -630,6 +630,7 @@
         // }
 
         async function playAudioStream() {
+            console.log("Playing audio stream...");
             const audioContext = new (window.AudioContext || window.webkitAudioContext)();
             const audioElement = new Audio('/feed');
             const track = audioContext.createMediaElementSource(audioElement);
@@ -640,29 +641,30 @@
         }
 
         function stopCurrentAudioStream() {
+            console.log("Stopping current audio stream...");
             if (currentAudio) {
                 currentAudio.pause();
                 currentAudio.currentTime = 0; // Optionally reset the audio
                 currentAudio = null;
+                audioPlaying = false;
             }
         }
 
         function startAudioStream() {
             if (!audioPlaying) {
                 console.log("Starting audio stream...");
-                playAudioStream().catch(console.error);
 
                 const now = new Date();
                 const msSinceMidnight = now.getTime() - new Date(now.setHours(0, 0, 0, 0)).getTime();
                 const msToNextInterval = 900000 - (msSinceMidnight % 900000); // 900000 ms = 15 minutes
 
                 setTimeout(() => {
-                    stopAudioStream();
-                    playAudioStream().catch(console.error);
+                    stopCurrentAudioStream();
+                    playAudioStream();
 
                     currentInterval = setInterval(() => {
-                        stopAudioStream();
-                        playAudioStream().catch(console.error);
+                        stopCurrentAudioStream();
+                        playAudioStream();
                         console.log("Refreshing stream...");
                     }, 900000);
                 }, msToNextInterval);
