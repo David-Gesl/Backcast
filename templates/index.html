@@ -652,7 +652,6 @@
 
         function startAudioStream() {
             if (!audioPlaying) {
-                console.log("Starting audio stream...");
                 playAudioStream();
 
                 const now = new Date();
@@ -675,7 +674,6 @@
         // To stop the audio stream if needed
         function stopAudioStream() {
             if (audioPlaying) {
-                console.log("Killing audio stream...");
                 clearInterval(currentInterval);
                 stopCurrentAudioStream();
                 audioPlaying = false;
